@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>تسجيل / دخول</title>
+    <link rel="stylesheet" href="nor.css" />
+    <link rel="stylesheet" href="main.css" />
+  </head>
+  <body>
+    <div class="big">
+      <div class="cohs">
+        <div class="part part1">تسجيل الدخول</div>
+        <div class="part part2 acitve">تسجيل</div>
+      </div>
+
+      <!-- فورم التسجيل -->
+      <form class="sign" onsubmit="event.preventDefault(); signUp();">
+        <div class="box-form">
+          <div class="email">
+            <label>البريد الالكتروني</label>
+            <input
+              type="email"
+              id="signup-email"
+              placeholder="قم بادخال البريد الالكتروني"
+            />
+          </div>
+          <div class="email">
+            <label>كلمة السر</label>
+            <input
+              type="password"
+              id="signup-password"
+              placeholder="قم بادخال كلمة السر"
+            />
+          </div>
+          <button type="submit">تسجيل</button>
+        </div>
+      </form>
+
+      <!-- فورم تسجيل الدخول -->
+      <form class="log scle" onsubmit="event.preventDefault(); login();">
+        <div class="box-form">
+          <div class="email">
+            <label>البريد الالكتروني</label>
+            <input
+              type="email"
+              id="login-email"
+              placeholder="قم بادخال البريد الالكتروني"
+            />
+          </div>
+          <div class="email">
+            <label>كلمة السر</label>
+            <input
+              type="password"
+              id="login-password"
+              placeholder="قم بادخال كلمة السر"
+            />
+          </div>
+          <button type="submit">تسجيل دخول</button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      // تبديل بين التسجيل والدخول
+      let part = document.querySelectorAll(".part");
+      let part1 = document.querySelector(".part1");
+      let part2 = document.querySelector(".part2");
+      let log = document.querySelector(".log");
+      let sign = document.querySelector(".sign");
+
+      part.forEach(function (e) {
+        e.addEventListener("click", function () {
+          part.forEach(function (el) {
+            el.classList.remove("acitve");
+          });
+          e.classList.add("acitve");
+        });
+      });
+      part2.onclick = function () {
+        log.classList.add("scle");
+        sign.classList.remove("scle");
+      };
+      part1.onclick = function () {
+        log.classList.remove("scle");
+        sign.classList.add("scle");
+      };
+    </script>
+
+    <!-- كود Firebase -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+      import {
+        getAuth,
+        createUserWithEmailAndPassword,
+        signInWithEmailAndPassword,
+      } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
+      // بيانات مشروعك من Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyDHGp0zA1rZ41qukS8Z1BIrPzCrE6Tp4n0",
+        authDomain: "osama-9004e.firebaseapp.com",
+        projectId: "osama-9004e",
+        storageBucket: "osama-9004e.appspot.com",
+        messagingSenderId: "857865307211",
+        appId: "1:857865307211:web:2a17a9903fb637a393f9ce",
+        measurementId: "G-FBRSWHJCVQ",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // تسجيل جديد
+      window.signUp = async () => {
+        const email = document.getElementById("signup-email").value;
+        const password = document.getElementById("signup-password").value;
+        try {
+          const userCred = await createUserWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          alert("تم التسجيل بنجاح: " + userCred.user.email);
+        } catch (err) {
+          alert("خطأ في التسجيل: " + err.message);
+        }
+      };
+
+      // تسجيل الدخول
+      window.login = async () => {
+        const email = document.getElementById("login-email").value;
+        const password = document.getElementById("login-password").value;
+        try {
+          const userCred = await signInWithEmailAndPassword(
+            auth,
+            email,
+            password
+          );
+          alert("تم تسجيل الدخول: " + userCred.user.email);
+        } catch (err) {
+          alert("خطأ في تسجيل الدخول: " + err.message);
+        }
+      };
+    </script>
+  </body>
+</html>
